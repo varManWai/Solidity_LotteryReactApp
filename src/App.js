@@ -12,6 +12,7 @@ class App extends React.Component {
     players: [],
     balance: '',
     value: '',
+    message: '',
   }
 
 
@@ -24,17 +25,32 @@ class App extends React.Component {
     this.setState({ manager, players, balance });
   }
 
-  onSubmit = async (event) =>{
+  onSubmit = async (event) => {
     event.preventDefault();
 
     const accounts = await web3.eth.getAccounts();
 
+    this.setState({ message: 'Waiting on transaction success...' })
+
     await lottery.methods.enter().send({
-      from:accounts[0],
-      value: web3.utils.toWei(this.state.value,'ether'),
+      from: accounts[0],
+      value: web3.utils.toWei(this.state.value, 'ether'),
     })
 
-    
+    this.setState({ message: 'You have been entered' })
+
+  }
+
+  onClick = async () => {
+    const accounts = await web3.eth.getAccounts();
+
+    this.setState({ message: 'Waiting on transaction success...' })
+
+    await lottery.methods.pickWinner().send({
+      from: accounts[0],
+    })
+
+    this.setState({ message: 'A winner has been picked!' })
 
   }
 
@@ -55,17 +71,26 @@ class App extends React.Component {
         <form onSubmit={this.onSubmit}>
           <h4>Want to try your luck?</h4>
           <div>
-            <label htmlFor="">Amount pf ether to enter</label>
+            <label htmlFor="">Amount of ether to enter: </label>
             <input
               value={this.state.value}
               onChange={(event) => {
                 this.setState({ value: event.target.value })
               }}
+
             />
           </div>
           <button>Enter</button>
         </form>
 
+        <hr />
+
+        <h4>ready to pick a winner?</h4>
+        <button onClick={this.onClick}>Pick a winner!</button>
+
+        <hr />
+
+        <h3>{this.state.message}</h3>
       </div>
     );
   }
