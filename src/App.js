@@ -3,12 +3,15 @@ import "./App.css";
 import React from "react";
 
 import web3 from "./web3";
+import lottery from "./lottery";
 
 class App extends React.Component {
   render() {
 
-    console.log(web3.version);
-    web3.eth.getAccounts().then(console.log);
+    // console.log(web3.version);
+    // web3.eth.getAccounts().then(console.log);
+
+    
 
     return (
       <div className="App">

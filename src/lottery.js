@@ -54,3 +54,6 @@ const abi = [
     type: "constructor",
   },
 ];
+
+export default new web3.eth.Contract(abi, address); //as a portal
+
